@@ -1,7 +1,9 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{puthesis}
-         [2008/05/02 v1.4 Princeton University Thesis class]
+         [2021/08/23 v1.5 Princeton University Thesis class]
 \RequirePackage{setspace}
+
+%%% This part does some Princeton U graduation date math... -JAS
 \newcounter{subyear}
 \setcounter{subyear}{\number\year}
 \def\submitted#1{\gdef\@submitted{#1}}
@@ -9,9 +11,10 @@
   \else\thesubyear\fi}
 \def\@submittedmonth{\ifnum\month>10 January\else\ifnum\month>5 November
   \else June\fi\fi}
+
 \def\copyrightyear#1{\gdef\@copyrightyear{#1}}
 \def\@copyrightyear{\number\year}
-\def\adviser#1{\gdef\@adviser{#1}}
+\def\advisor#1{\gdef\@advisor{#1}}
 \long\def\@abstract{\@latex@error{No \noexpand\abstract given}\@ehc}
 \newcommand*{\frontmatter}{
   \pagenumbering{roman}
@@ -42,10 +45,8 @@
 \newcommand*{\tablespacing}{
   \singlespacing
 }
-%% Command inserted into the document immediately after \begin{document} to place all frontmatter
-%%   This was formerly named 'begincmd' and called below in \AtBeginDocument{}
-%%   However, that is not compatible with package 'hyperref'. \tableofcontents needs
-%%   to be declared from within the document itself. 
+
+%% Command inserted into the document immediately after \begin{document} to place all frontmatter.
 \newcommand*{\makefrontmatter}{
 \bodyspacing
 \frontmatter\maketitlepage\makecopyrightpage\makeabstract
@@ -54,12 +55,15 @@
 \clearpage\mainmatter
 }
 \def\@submitted{\@submittedmonth~\@submittedyear}
-\def\@dept{Mathematics}
+\def\@dept{Astrophysical Sciences}
 \def\@deptpref{Department of}
 \def\departmentprefix#1{\gdef\@deptpref{#1}}
 \def\department#1{\gdef\@dept{#1}}
 \long\def\acknowledgements#1{\gdef\@acknowledgements{#1}}
 \def\dedication#1{\gdef\@dedication{#1}}
+
+% You may need to change some of the vspace values here
+% if you have a longer or shorter title.
 \newcommand{\maketitlepage}{{
   \thispagestyle{empty}
   \sc
@@ -85,9 +89,8 @@
   \extravspace{.3in}
   \begin{center}
     Recommended for Acceptance \\
-    by the \@deptpref \\
-    \@dept \\
-    Adviser: \@adviser
+    by the \@deptpref \@dept \\
+    Advisor: \@advisor
   \end{center}
   \vspace{.3in}
   \extravspace{.3in}
@@ -96,6 +99,7 @@
   \end{center}
   \clearpage
   }}
+
 \newcommand*{\makecopyrightpage}{
   \thispagestyle{empty}
   \vspace*{0in}
@@ -103,9 +107,16 @@
     \copyright\ Copyright by \@author, \@copyrightyear. \\
     All rights reserved.
   \end{center}
-  \clearpage}
+  \clearpage
+  }
+
 \newcommand*{\makeabstract}{
   \newpage
+    \ifdefined\phantomsection
+     % makes hyperref recognize this section properly for pdf links
+     \phantomsection
+    \fi
+  \phantomsection
   \addcontentsline{toc}{section}{Abstract}
   \begin{center}
   \Large \textbf{Abstract}
@@ -113,6 +124,7 @@
   \@abstract
   \clearpage
   }
+
 \def\makeacknowledgements{
   \ifx\@acknowledgements\undefined
   \else
@@ -140,6 +152,7 @@
     \clearpage
   \fi
   }
+
 \DeclareOption{lot}{\renewcommand*{\makelot}{
   \ifdefined\phantomsection
     % makes hyperref recognize this section properly for pdf links
@@ -147,6 +160,7 @@
   \else
   \fi
   \addcontentsline{toc}{section}{List of Tables}\listoftables}}
+
 \DeclareOption{lof}{\renewcommand*{\makelof}{
   \ifdefined\phantomsection
     % makes hyperref recognize this section properly for pdf links
@@ -154,6 +168,7 @@
   \else
   \fi
   \addcontentsline{toc}{section}{List of Figures}\listoffigures}}
+
 \DeclareOption{los}{
   \renewcommand*{\makelos}{
     \RequirePackage{losymbol}
@@ -167,6 +182,7 @@
     \addcontentsline{toc}{section}{List of Symbols}
   }
 }
+
 \DeclareOption{singlespace}{
   \renewcommand*{\bodyspacing}{
   \singlespacing
@@ -182,15 +198,34 @@
 }
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 \ProcessOptions
-%% Not necessary to specify the point size - we inherit it from above
-%% \LoadClass[12pt]{report}
 \LoadClass{report}
-\setlength{\oddsidemargin}{.5in}   %{.4375in}
-\setlength{\evensidemargin}{.5in} %{.4375in}
+
+%%% Setting page width and margins:
+%%% You might have a few options here which can be commented and uncommented,
+%%% depending on whether you want to compile a bound version or screen pdf.
+%%% https://library.princeton.edu/special-collections/policies/masters-theses-and-phd-dissertations-submission-guidelines
+% "Option 1. The PDF can have 1.5 inch margins on the left hand side
+%  with one inch margins on the right, top and bottom, as the bound
+%  copy does. This can result in the same version of your
+%  dissertation being used for the bound copy and the PDF." -Dissertation formating requirements
+%\setlength{\oddsidemargin}{0.5in}   %{.4375in}
+%\setlength{\evensidemargin}{0.5in} %{.4375in}
+
+%\setlength{\oddsidemargin}{0.25in}
+%\setlength{\evensidemargin}{0.25in}
+%\setlength{\textwidth}{6in}
+
+% "Option 2: The PDF can have one-inch margins on all sides
+%  for the best possible online presentation of your work." -Dissertation formating requirements
+%   I get about 90 characters per line this way. I ended up using it
+%   for all versions as I see the pdf as the most important. -JAS
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+
 \setlength{\topmargin}{-.5in}  %{-.5625in}
 \setlength{\footskip}{.25in} % to put page number 3/4" from the bottom of the page (1/4" from bottom of body text)
 \setlength{\textheight}{9in}
-\setlength{\textwidth}{6in}
 
 %%% Alter LaTeX defaults to try to eliminate all widows and orphans
 \clubpenalty=10000
@@ -201,8 +236,5 @@
 \setlength{\emergencystretch}{2em}
 
 \long\def\abstract#1{\gdef\@abstract{#1}}
-%% 'begincmd' no longer used -- insert \makefrontmatter in the document instead. See above. 
-%\AtBeginDocument{\begincmd}
 \endinput
-%% 
 %% End of file `puthesis.cls'.
