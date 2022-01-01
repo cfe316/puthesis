@@ -1,1 +1,22 @@
-thesis.bbl
+# various latex intermediate files
+*.aux
+*.bbl
+*.fdb_latexmk
+*.fls
+*.blg
+*.lof
+*.log
+*.lot
+*.odt
+*.ods
+
+thesis.out
+thesis.pdf
+thesis.toc
+
+# produced by the 'layout' package
+# for ensuring that margin guidelines are met
+layout_thesis.pdf
+
+# vim temporary files
+*.sw*
