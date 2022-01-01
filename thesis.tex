@@ -9,12 +9,15 @@
 %\documentclass[12pt,lot, lof, singlespace]{puthesis}
 %\newcommand{\printmode}{}
 
-%%% For the electronic copy, use doublespacing, define "\proquestmode" to use outlined links, instead of colored links. 
-\documentclass[12pt,lot, lof]{puthesis}
-\newcommand{\proquestmode}{}
-% I prefer proquestmode to be off for electronic copies for normal use, since the colored links are less distracting. However when printed in black and white, the colored links are difficult to read. 
+%%% For the electronic copy, use doublespacing, define "\proquestmode" to use outlined links, instead of colored links.
+\documentclass[12pt,lot,lof]{puthesis}
+% lot : make the List of Tables
+% lof : make the List of Figures
 
-%%% For early drafts without some of the frontmatter
+\newcommand{\proquestmode}{}
+% I prefer proquestmode to be off for electronic copies for normal use, since the colored links are less distracting. However when printed in black and white, the colored links are difficult to read.
+
+%%% For early drafts without the list of tables and list of figures
 % Also see the "ifodd" command below to disable more frontmatter
 %\documentclass[12pt]{puthesis}
 
@@ -40,21 +43,21 @@
     % See p.105 of "TeX Unbound" for suggested values.
     % See pp. 199-200 of Lamport's "LaTeX" book for details.
     %   General parameters, for ALL pages:
-    \renewcommand{\topfraction}{0.85}	% max fraction of floats at top
-    \renewcommand{\bottomfraction}{0.6}	% max fraction of floats at bottom
+    \renewcommand{\topfraction}{0.85} % max fraction of floats at top
+    \renewcommand{\bottomfraction}{0.6} % max fraction of floats at bottom
     %   Parameters for TEXT pages (not float pages):
     \setcounter{topnumber}{2}
     \setcounter{bottomnumber}{2}
     \setcounter{totalnumber}{4}     % 2 may work better
     \setcounter{dbltopnumber}{2}    % for 2-column pages
-    \renewcommand{\dbltopfraction}{0.66}	% fit big float above 2-col. text
-    \renewcommand{\textfraction}{0.15}	% allow minimal text w. figs
+    \renewcommand{\dbltopfraction}{0.66}  % fit big float above 2-col. text
+    \renewcommand{\textfraction}{0.15}  % allow minimal text w. figs
     %   Parameters for FLOAT pages (not text pages):
-    \renewcommand{\floatpagefraction}{0.66}	% require fuller float pages
-	% N.B.: floatpagefraction MUST be less than topfraction !!
-    \renewcommand{\dblfloatpagefraction}{0.66}	% require fuller float pages
+    \renewcommand{\floatpagefraction}{0.66} % require fuller float pages
+    % N.B.: floatpagefraction MUST be less than topfraction !!
+    \renewcommand{\dblfloatpagefraction}{0.66}  % require fuller float pages
 
-% The documentclass already sets parameters to make a high penalty for widows and orphans. 
+% The documentclass already sets parameters to make a high penalty for widows and orphans.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
 %%%% Use packages
@@ -140,7 +143,7 @@
 
 % create an environment that will indent text
 % see: http://latex.computersci.org/Reference/ListEnvironments
-% 	\raggedright makes them left aligned instead of justified
+%   \raggedright makes them left aligned instead of justified
 \newenvironment{indenttext}{
     \begin{list}{}{ \itemsep 0in \itemindent 0in
     \labelsep 0in \labelwidth 0in
@@ -154,7 +157,7 @@
   {\end{list}}
 
 % another environment that's an indented list, with no spaces between items -- if we want multiple items/lines. Useful in tables. Use \item inside the environment.
-% 	\raggedright makes them left aligned instead of justified
+%   \raggedright makes them left aligned instead of justified
 \newenvironment{indentlist}{
     \begin{list}{}{ \itemsep 0in \itemindent 0in
     \labelsep 0in \labelwidth 0in
