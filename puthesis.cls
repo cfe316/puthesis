@@ -116,7 +116,6 @@
      % makes hyperref recognize this section properly for pdf links
      \phantomsection
     \fi
-  \phantomsection
   \addcontentsline{toc}{section}{Abstract}
   \begin{center}
   \Large \textbf{Abstract}
@@ -133,7 +132,6 @@
      \phantomsection
     \else
     \fi
-
     \addcontentsline{toc}{section}{Acknowledgements}
     \begin{center}
       \Large \textbf{Acknowledgements}
