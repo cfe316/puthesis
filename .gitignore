@@ -11,6 +11,8 @@
 *.ods
 
 thesis.out
+thesis.bcf
+thesis.run.xml
 thesis.pdf
 thesis.toc
 
