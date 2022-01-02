@@ -7,7 +7,7 @@
 %%% For print copies
 %% set 'singlespace' option to set entire thesis to single space, and define "\printmode" to remove all hyperlinks for printed copies of the thesis. Delete all output files before changing this mode -- it will turn hyperref package on and off
 %\documentclass[12pt,lot, lof, singlespace]{puthesis}
-\newcommand{\printmode}{}
+% \newcommand{\printmode}{}
 
 %%% For the electronic copy, use doublespacing, define "\proquestmode" to use outlined links, instead of colored links.
 \documentclass[12pt,lot,lof]{puthesis}
@@ -135,7 +135,7 @@
 %% (margins, body width, etc) are correct.
 %% To use it, uncomment this and the 'layout' line just after \begin{document}
 %% Just remember one tex point is 1/72.27 inches.
-%\usepackage{layout}
+\usepackage{layout}
 
 %%%% Improved bibliography
 %%%% Most of this is from stackoverflow.
@@ -360,7 +360,7 @@ menucolor=myIntColor,
 
 \begin{document}
 
-% Activate the 'layout' package and this to verify the layout
+% Activate to verify the layout
 % \layout
 
 {\hypersetup{linkcolor=black}
