@@ -161,6 +161,38 @@
      backrefpages = {pp.} % for multiple page numbers
 }
 
+% IIRC this makes it so that you print the DOI (as a hyperlink to doi.org) rather than a hyperlink to the journal article
+% but it will still print a standard URL if no DOI is available. I did this because having two hyperlinks is too much.
+\renewbibmacro*{doi+eprint+url}{
+  \iftoggle{bbx:url}
+    {\iffieldundef{doi}{\usebibmacro{url+urldate}}{}}
+    {}
+   \newunit\newblock
+   \iftoggle{bbx:eprint}{\usebibmacro{eprint}}
+   {}
+   \newunit\newblock
+   \iftoggle{bbx:doi}
+   {\printfield{doi}}
+   {}}
+
+\renewbibmacro*{volume+number+eid}{%
+  \textbf{\printfield{volume}}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbthinspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+\renewbibmacro{in:}{\ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+
+\renewbibmacro*{issue+date}{%
+  \printtext[]{\addcomma\space%
+    %\printfield{issue}%      % these are only important for a journal with issues like "Spring".
+%    \setunit*{\addspace}%
+    \usebibmacro{date}}%
+  \newunit}
+
 \addbibresource{thesis.bib}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Printed vs. online formatting
@@ -207,6 +239,11 @@
 %\hypersetup{linktocpage}
 \fi % proquest or online formatting
 \fi % printed or online formatting
+
+% The cleveref packages is set AFTER hyperref. Highly recommended!
+% Allows writing \cref{eq:pythagoras} instead of Eq.~(\ref{eq:pythagoras})
+% and more customization of which parts of the reference are links
+\usepackage{cleveref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
