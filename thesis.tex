@@ -61,6 +61,12 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
 %%%% Use packages
+%%%% I've found the best quick reference for packages is the 'texdoc' command.
+%%%% It usually opens up a pdf of the documentation.
+
+% Improves the output font encoding: see
+% https://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
+\usepackage[T1]{fontenc}
 
 %\usepackage{amsfonts}
 
@@ -84,8 +90,78 @@
 % default caption width is 4in for longtable, but wider for normal tables
 \setlength{\LTcapwidth}{\textwidth}
 
+%controlling hyphenations
+\usepackage[english]{babel}
+\hyphenation{Mathematica MATLAB} % do not hyphenate
+\hyphenation{to-ka-mak} % where to hyphenate
 
+%For printing numbers and units. Highly recommend!!
+\usepackage{siunitx}
 
+%%%% Additional packages you may not have considered
+% For chemicals and chemical reactions. Also highly recommend!!
+% \usepackage[version=4]{mhchem}
+
+% For sideways tables or figure like for a full-page extra-wide table
+% PDF readers will automatically rotate just the one page.
+% \usepackage{pdflscape}
+% \usepackage{afterpage}
+
+% For the rest of your thesis
+% \usepackage{lipsum}
+
+% Versatile package for making more professional figures and tables.
+% For example, figures with captions on the side.
+% Highly recommended!See `texdoc floatrow`
+% \usepackage[capbesideposition=outside,
+%             facing=yes, footnoterule=none, footskip=.35\skip\footins,
+%             capbesidesep=quad]{floatrow}
+
+% for fancy fractions: \sfrac command.
+% \usepackage{xfrac}
+
+% For more professional tables: allows aligning columns on the decimal point
+% \usepackage{dcolumn}
+% \newcolumntype{d}[1]{D{.}{\cdot}{#1}}
+
+% For caption on another page when you have a very big figure
+% \usepackage{ccaption}
+% \usepackage[style=base,tableposition=top]{caption}
+
+% for subfigures (two figures side by side)
+% \usepackage{subcaption}
+
+%% The 'layout' package allows you to make sure the page layout
+%% (margins, body width, etc) are correct.
+%% To use it, uncomment this and the 'layout' line just after \begin{document}
+%% Just remember one tex point is 1/72.27 inches.
+%\usepackage{layout}
+
+%%%% Improved bibliography
+%%%% Most of this is from stackoverflow.
+\usepackage[maxbibnames=3,
+            bibstyle=numeric-comp,
+            citestyle=numeric-comp,
+            eprint=false,
+            giveninits=true,
+            backref=true, % backreferences are totally cool because you can see how many times and where a source was cited.
+            backend=biber]{biblatex}
+
+\AtEveryBibitem{\clearfield{issn}\clearfield{pagetotal}}
+\AtEveryCitekey{\clearfield{issn}}
+
+% Allow proper formatting of 'letter's which I think was how I cited emails
+% or other documents
+\DeclareBibliographyAlias{letter}{misc}
+
+% goes along with the 'backreferences' option
+% replace the default backreference string "(cit. on p. 4)" with "(p. 4)"
+\DefineBibliographyStrings{english}{%
+     backrefpage  = {p.}, % for single page number
+     backrefpages = {pp.} % for multiple page numbers
+}
+
+\addbibresource{thesis.bib}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Printed vs. online formatting
 \ifdefined\printmode
@@ -132,6 +208,22 @@
 \fi % proquest or online formatting
 \fi % printed or online formatting
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%% Proper footnote sizing: PU says "Font size should be equivalent in scale to 10 point Arial or 12 point Times New Roman. These rules apply to captions, and bibliographies. Footnotes and endnotes can be one point smaller than the body of the text."
+\makeatletter
+\renewcommand\footnotesize{%
+   \@setfontsize\footnotesize\@xipt\@xiipt
+   \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 6\p@ \@plus2\p@ \@minus2\p@
+               \parsep 3\p@ \@plus2\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
 %%%% Define commands
@@ -224,8 +316,15 @@
 
 \begin{document}
 
-\makefrontmatter
+% Activate the 'layout' package and this to verify the layout
+% \layout
 
+{\hypersetup{linkcolor=black}
+\makefrontmatter
+}
+% need to re-invoke this command from puthesis.cls, in order to have double spacing in the rest of the document.
+% It's invoked inside \makefrontmatter but then goes away since it's inside braces.
+\bodyspacing
 
 % If you've disabled frontmatter, you can insert the toc manually
 %\tableofcontents\clearpage
@@ -242,7 +341,6 @@
 
 % Make the bibliography single spaced
 \singlespacing
-\bibliographystyle{plain}
 
 % add the Bibliography to the Table of Contents
 \cleardoublepage
@@ -252,8 +350,6 @@
 \fi
 \addcontentsline{toc}{chapter}{Bibliography}
 
-% include your .bib file
-\bibliography{thesis}
+\printbibliography
 
 \end{document}
-
