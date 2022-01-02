@@ -7,14 +7,14 @@
 %%% For print copies
 %% set 'singlespace' option to set entire thesis to single space, and define "\printmode" to remove all hyperlinks for printed copies of the thesis. Delete all output files before changing this mode -- it will turn hyperref package on and off
 %\documentclass[12pt,lot, lof, singlespace]{puthesis}
-%\newcommand{\printmode}{}
+\newcommand{\printmode}{}
 
 %%% For the electronic copy, use doublespacing, define "\proquestmode" to use outlined links, instead of colored links.
 \documentclass[12pt,lot,lof]{puthesis}
 % lot : make the List of Tables
 % lof : make the List of Figures
 
-\newcommand{\proquestmode}{}
+% \newcommand{\proquestmode}{}
 % I prefer proquestmode to be off for electronic copies for normal use, since the colored links are less distracting. However when printed in black and white, the colored links are difficult to read.
 
 %%% For early drafts without the list of tables and list of figures
@@ -194,50 +194,57 @@
   \newunit}
 
 \addbibresource{thesis.bib}
+
+\usepackage[dvipsnames, svgnames]{xcolor}
+% Custom colors of hyperref links:
+\colorlet{myIntColor}{DarkRed} % for links to equations, figures, and sections
+\colorlet{myCiteColor}{DarkGreen} % citations
+\colorlet{myExtColor}{MidnightBlue} % external hyperlinks / urls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Printed vs. online formatting
 \ifdefined\printmode
 
 % Printed copy
-% url package understands urls (with proper line-breaks) without hyperlinking them
-\usepackage{url}
-
+% While obviously the printed copy doesn't need hyperlinks,
+% This allows you to keep any \autoref or \cref commands
+\usepackage[hyperfootnotes=false, hidelinks]{hyperref}
 
 \else
 
 \ifdefined\proquestmode
-%ProQuest copy -- http://www.princeton.edu/~mudd/thesis/Submissionguide.pdf
+% ProQuest copy -- https://library.princeton.edu/special-collections/policies/masters-theses-and-phd-dissertations-submission-guidelines
 
-% ProQuest requires a double spaced version (set previously). They will take an electronic copy, so we want links in the pdf, but also copies may be printed or made into microfilm in black and white, so we want outlined links instead of colored links.
-\usepackage{hyperref}
-\hypersetup{bookmarksnumbered}
-
-% copy the already-set title and author to use in the pdf properties
-\makeatletter
-\hypersetup{pdftitle=\@title,pdfauthor=\@author}
-\makeatother
+% ProQuest requires a double spaced version (set previously). They will take an electronic copy, so we want links in the pdf, but also copies may be printed or made into microfilm in black and white.
+% One option is to have 'outlined' links but I think that is super ugly, so I just make the proquest links black. This effectively means printmode is the same as proquestmode (except for single-spacing it)
+% This also means that only I have the 'definitive' copy of the thesis (with the nicely colored links) to distribute as I like. This helps dissipate some of my rage against Proquest. -JAS
+\usepackage[hyperfootnotes=false, hidelinks]{hyperref}
 
 \else
 % Online copy
-
 % adds internal linked references, pdf bookmarks, etc
 
 % turn all references and citations into hyperlinks:
 %  -- not for printed copies
-% -- automatically includes url package
+%  -- automatically includes url package
 % options:
 %   colorlinks makes links by coloring the text instead of putting a rectangle around the text.
-\usepackage{hyperref}
-\hypersetup{colorlinks,bookmarksnumbered}
+%   linktoc=all makes both the section
+\usepackage[hyperfootnotes=false]{hyperref}
+\hypersetup{colorlinks,
+linkcolor=myIntColor,
+citecolor=myCiteColor,
+urlcolor =myExtColor,
+menucolor=myIntColor,
+}
+
+\fi % proquest or online formatting
 
 % copy the already-set title and author to use in the pdf properties
 \makeatletter
 \hypersetup{pdftitle=\@title,pdfauthor=\@author}
+\hypersetup{bookmarksnumbered, linktoc=all}
 \makeatother
 
-% make the page number rather than the text be the link for ToC entries
-%\hypersetup{linktocpage}
-\fi % proquest or online formatting
 \fi % printed or online formatting
 
 % The cleveref packages is set AFTER hyperref. Highly recommended!
