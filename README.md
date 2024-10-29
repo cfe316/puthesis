@@ -26,7 +26,7 @@ I always use the `latexmk` command which takes care of the process. If you don't
 
 ```
 pdflatex thesis.tex
-biber thesis.tex
+biber thesis
 pdflatex thesis.tex
 pdflatex thesis.tex
 ```
